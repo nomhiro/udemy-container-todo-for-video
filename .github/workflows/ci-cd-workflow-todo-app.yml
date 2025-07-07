@@ -1,0 +1,36 @@
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install dependencies
+        run: cd todo-app && npm install
+
+      - name: Run Jest tests
+        run: cd todo-app && npm test
+
+      - name: Log in to Azure
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Build and Push to ACR
+        run: |
+          az acr login --name ${{ secrets.ACR_NAME }}
+          docker build -t ${{ secrets.ACR_NAME }}.azurecr.io/todo-app:${{ github.sha }} ./todo-app
+          docker push ${{ secrets.ACR_NAME }}.azurecr.io/todo-app:${{ github.sha }}
+      - name: Deploy to Azure App Service
+        run: |
+          az webapp config container set \
+            --name udemytodoapp-app \
+            --resource-group ${{ secrets.RESOURCE_GROUP }} \
+            --docker-custom-image-name ${{ secrets.ACR_NAME }}.azurecr.io/todo-app:${{ github.sha }}

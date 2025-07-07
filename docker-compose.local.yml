@@ -1,0 +1,56 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:17
+    container_name: postgres_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    environment:
+      - POSTGRES_USER=udemy_learn_user
+      - POSTGRES_PASSWORD=udemy_learn_password
+      - POSTGRES_DB=udemy_learn_db
+    networks:
+      - udemy-learn-container
+    ports:
+      - "5432:5432"
+
+  todo-app:
+    image: todo-app:latest
+    build:
+      context: ./todo-app
+      dockerfile: Dockerfile
+    networks:
+      - udemy-learn-container
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+    env_file:
+      - ./todo-app/.env.local.container
+    depends_on:
+      - db
+    stdin_open: true
+    tty: true
+
+  notify-service:
+    image: notify-service:latest
+    build:
+      context: ./notify-service
+      dockerfile: Dockerfile
+    networks:
+      - udemy-learn-container
+    env_file:
+      - ./notify-service/.env.local.container
+    depends_on:
+      - db
+    stdin_open: true
+    tty: true
+
+volumes:
+  postgres_data:
+
+
+networks:
+  udemy-learn-container:

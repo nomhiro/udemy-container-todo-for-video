@@ -1,0 +1,5 @@
+pytz
+python-dateutil
+psycopg2-binary
+dotenv
+pytest
