@@ -17,7 +17,7 @@
 
 targetScope = 'resourceGroup'
 
-param prefix string = 'udemytodoapp'
+param prefix string = 'udemytodoappshrkm0708'
 param location string = 'japaneast'
 @secure()
 param adminPassword string

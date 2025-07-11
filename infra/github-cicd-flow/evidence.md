@@ -3,24 +3,24 @@ Azure認証情報（サービスプリンシパル）の登録
 
 ```bash
 az ad sp create-for-rbac --name "ToDoAppDeployAuth" --role contributor `
---scopes /subscriptions/{サブスクID}/resourceGroups/rg-todo/providers/Microsoft.Web/sites/udemytodoapp-app `
+--scopes /subscriptions/f80766c9-6be7-43f9-8369-d492efceff1e/resourceGroups/rg-udemytodoappshrkm0708/providers/Microsoft.Web/sites/udemytodoappshrkm0708-app `
 --json-auth
 ```
 
 notify-serviceへの権限付与
 ```bash
 az role assignment create `
-  --assignee サービスプリンシパルのクライアントID `
+  --assignee acc5fe33-5f8f-4fc3-816c-fda163023d71 `
   --role contributor `
-  --scope /subscriptions/{サブスクID}/resourceGroups/rg-todo/providers/Microsoft.Web/sites/udemytodoapp-notify
+  --scope /subscriptions/f80766c9-6be7-43f9-8369-d492efceff1e/resourceGroups/rg-udemytodoappshrkm0708/providers/Microsoft.Web/sites/udemytodoappshrkm0708-notify
 ```
 
 ACR への AcrPush 権限付与
 ```bash
 az role assignment create `
-  --assignee サービスプリンシパルのクライアントID `
+  --assignee acc5fe33-5f8f-4fc3-816c-fda163023d71 `
   --role AcrPush `
-  --scope /subscriptions/{サブスクID}/resourceGroups/rg-todo/providers/Microsoft.ContainerRegistry/registries/udemytodoappacr01
+  --scope /subscriptions/f80766c9-6be7-43f9-8369-d492efceff1e/resourceGroups/rg-udemytodoappshrkm0708/providers/Microsoft.ContainerRegistry/registries/udemytodoappshrkm0708acr01
 ```
 
 

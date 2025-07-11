@@ -1,3 +1,4 @@
+# このワークフローは、mainブランチへのpushやpull requestが発生したときに実行されます
 on:
   push:
     branches:
@@ -8,11 +9,13 @@ on:
 
 jobs:
   build-and-test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest  # Ubuntuの最新バージョンでジョブを実行
     steps:
       - uses: actions/checkout@v2
+        # コードをGitHubリポジトリからチェックアウト（取得）します
 
       - name: Install dependencies and run tests
+        # notify-serviceディレクトリに移動し、仮想環境を作成して依存パッケージをインストールし、pytestでテストを実行
         run: |
           cd notify-service
           python -m venv venv
@@ -24,14 +27,19 @@ jobs:
         uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
+        # Azureにログイン（認証情報はGitHubのシークレットから取得）
 
       - name: Build and Push to ACR
+        # Azure Container Registry(ACR)にログイン
+        # notify-serviceのDockerイメージをビルドし、タグを付ける
+        # ビルドしたイメージをACRにプッシュ
         run: |
           az acr login --name ${{ secrets.ACR_NAME }}
           docker build -t ${{ secrets.ACR_NAME }}.azurecr.io/notify-service:${{ github.sha }} ./notify-service
           docker push ${{ secrets.ACR_NAME }}.azurecr.io/notify-service:${{ github.sha }}
 
       - name: Deploy to Azure App Service
+        # Azure App Serviceに、ACRのDockerイメージをデプロイ
         run: |
           az webapp config container set \
             --name udemytodoapp-notify \

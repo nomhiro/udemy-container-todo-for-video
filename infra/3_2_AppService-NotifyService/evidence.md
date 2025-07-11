@@ -10,7 +10,7 @@
   },
   {
     "name": "POSTGRES_HOST",
-    "value": "udemytodoapp-pg.postgres.database.azure.com",
+    "value": "udemytodoappshrkm0708-pg.postgres.database.azure.com",
     "slotSetting": false
   },
   {
@@ -72,10 +72,9 @@
 
 ```bash
 az webapp config container set `
-  --name udemytodoapp-notify `
-  --resource-group rg-todo `
-  --container-image-name udemytodoappacr01.azurecr.io/notify-service:latest
-  --
+  --name udemytodoappshrkm0708-notify `
+  --resource-group rg-udemytodoappshrkm0708 `
+  --container-image-name udemytodoappshrkm0708acr01.azurecr.io/notify-service:latest
 ```
 
 継続的デプロイをONに

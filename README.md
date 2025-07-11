@@ -44,7 +44,7 @@ docker volume rm udemy-container-todo-app_postgres_data
 
 ## ローカル開発
 ### ToDoアプリ
-.envファイルを作成し、以下の内容を記述します。
+.env.local ファイルを作成し、以下の内容を記述します。
 ```env
 POSTGRES_USER=udemy_learn_user
 POSTGRES_PASSWORD=udemy_learn_password
@@ -61,7 +61,15 @@ npm run dev
 ```
 
 ### 通知サービス
-.envファイルを作成し、以下の内容を記述します。
+#### Googleメール送信
+
+Googleアカウントにログインし、アプリパスワードを設定します。
+https://myaccount.google.com/apppasswords
+アプリ名とパスワードをコピーして控えておいてください。
+
+.env ファイルを作成し、以下の内容を記述します。
+SLEEP_SECONDSは、通知サービスが何秒ごとにデータベースを確認するかを指定します。動作確認のためであれば、60sなどに設定しておくと良いでしょう。
+
 ```env
 POSTGRES_USER="udemy_learn_user"
 POSTGRES_PASSWORD="udemy_learn_password"
@@ -75,7 +83,13 @@ RECIPIENT_EMAIL="メールアドレス"
 SLEEP_SECONDS="3600"
 ```
 
-venvを作成し、F5実行
+VSCodeをnotify-serviceフォルダで開き、ターミナルを開いて以下のコマンドを実行します。
+```bash
+pip install -r requirements.txt
+```
+```bash
+python notify_service.py
+```
 
 
 ## Dockerビルドと起動
@@ -121,7 +135,18 @@ docker-compose -f docker-compose.local.yml up -d
 az login
 ```
 
+ログイン情報の確認
+```bash
+az account show
+```
+
 ### Azureリソースの作成
+```bash
+cd .\infra
+```
+
+main.bicepのprefix名を一意な名前に変更します。小文字英字と数字のみにしましょう。
+例）todoappshrkm0708
 ```bash
 azd up
 ```
@@ -162,5 +187,5 @@ SUCCESS: Your up workflow to provision and deploy to Azure completed in 5 minute
 ./infraフォルダ参照
 
 - PostgreSQLにデータベース作成とテーブル作成、データ登録
-- ACRにToDoアプリと通知サービスのDockerイメージをプッシュ
+- ACRにToDoアプリと通知サービスのコンテナイメージをプッシュ
 - App ServiceにToDoアプリのデプロイ
