@@ -45,4 +45,4 @@ jobs:
           az webapp config container set \
             --name udemytodoapp-app \
             --resource-group ${{ secrets.RESOURCE_GROUP }} \
-            --docker-custom-image-name ${{ secrets.ACR_NAME }}.azurecr.io/todo-app:${{ github.sha }}
+            --container-image-name ${{ secrets.ACR_NAME }}.azurecr.io/todo-app:${{ github.sha }}

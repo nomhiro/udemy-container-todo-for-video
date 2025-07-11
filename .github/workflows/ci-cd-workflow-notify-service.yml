@@ -44,4 +44,4 @@ jobs:
           az webapp config container set \
             --name udemytodoapp-notify \
             --resource-group ${{ secrets.RESOURCE_GROUP }} \
-            --docker-custom-image-name ${{ secrets.ACR_NAME }}.azurecr.io/notify-service:${{ github.sha }}
+            --container-image-name ${{ secrets.ACR_NAME }}.azurecr.io/notify-service:${{ github.sha }}
