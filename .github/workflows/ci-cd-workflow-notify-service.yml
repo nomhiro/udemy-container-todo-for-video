@@ -42,6 +42,6 @@ jobs:
         # Azure App Serviceに、ACRのDockerイメージをデプロイ
         run: |
           az webapp config container set \
-            --name udemytodoapp-notify \
+            --name udemytodoappshrkm0708-notify \
             --resource-group ${{ secrets.RESOURCE_GROUP }} \
             --container-image-name ${{ secrets.ACR_NAME }}.azurecr.io/notify-service:${{ github.sha }}
